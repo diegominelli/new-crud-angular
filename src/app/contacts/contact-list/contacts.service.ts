@@ -1,12 +1,32 @@
 import { Injectable } from '@angular/core';
 import { ContactsModel } from './contacts.model';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ContactsService {
-  returnAll(): ContactsModel[] {
-    return CONTACTS;
+  private URL: string = 'http://localhost:3000/contacts';
+
+  constructor(private http: HttpClient) {}
+
+  returnAll(): Observable<ContactsModel[]> {
+    return this.http.get<ContactsModel[]>(this.URL);
+  }
+
+  returnById(contactId): Observable<ContactsModel> {
+    return this.http.get<ContactsModel>(`${this.URL}/${contactId}`);
+  }
+
+  save(contact: ContactsModel) {
+    if (contact.id) {
+      const index = CONTACTS.findIndex(
+        (contactInterator: ContactsModel) => contactInterator.id === contact.id
+      );
+
+      CONTACTS[index] = contact;
+    }
   }
 }
 

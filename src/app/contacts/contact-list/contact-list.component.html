@@ -38,6 +38,14 @@
             [title]="contact.rating"
           ></app-starts>
         </td>
+        <td>
+          <button
+            class="btn btn-primary"
+            [routerLink]="['/contacts/info', contact.id]"
+          >
+            Info
+          </button>
+        </td>
       </tr>
     </tbody>
   </table>

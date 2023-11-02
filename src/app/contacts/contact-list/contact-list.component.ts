@@ -16,8 +16,22 @@ export class ContactListComponent implements OnInit {
   constructor(private contactsService: ContactsService) {}
 
   ngOnInit(): void {
-    this._contacts = this.contactsService.returnAll();
-    this.filteredContacts = this._contacts;
+    this.returnAll();
+  }
+
+  returnAll(): void {
+    this.contactsService.returnAll().subscribe({
+      next: (contacts) => {
+        this._contacts = contacts;
+        this.filteredContacts = this._contacts;
+      },
+      error: (e) => {
+        console.log('Error in returnAll', e);
+      },
+      complete() {
+        console.log('Done');
+      },
+    });
   }
 
   set filter(value: string) {
